@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FERREMAS - Tienda</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4 text-center">FERREMAS - Tienda</h1>
+        
+        <div class="text-end mb-4">
+            <a href="{% url 'view_cart' %}" class="btn btn-primary">Ver Carrito</a>
+            <a href="{% url 'checkout' %}" class="btn btn-success">Checkout</a>
+        </div>
+
+        <div class="row">
+            <div class="col-12 mb-4">
+                <h2>Herramientas</h2>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Martillos</h5>
+                        <p class="card-text">Gran variedad de martillos para todas tus necesidades.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Destornilladores</h5>
+                        <p class="card-text">Destornilladores de todas las formas y tamaños.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Llaves</h5>
+                        <p class="card-text">Llaves ajustables y de diferentes tipos para cualquier tarea.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Taladros</h5>
+                        <p class="card-text">Taladros eléctricos de alto rendimiento.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Sierras</h5>
+                        <p class="card-text">Sierras para corte de madera, metal y otros materiales.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Lijadoras</h5>
+                        <p class="card-text">Lijadoras para un acabado perfecto en tus proyectos.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12 mb-4">
+                <h2>Materiales de Construcción</h2>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Cemento</h5>
+                        <p class="card-text">Cemento de alta calidad para tus construcciones.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Arena</h5>
+                        <p class="card-text">Arena fina y gruesa para diversas aplicaciones.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Ladrillos</h5>
+                        <p class="card-text">Ladrillos resistentes y de diferentes tamaños.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12 mb-4">
+                <h2>Acabados</h2>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Pinturas</h5>
+                        <p class="card-text">Amplia gama de pinturas para todos los gustos.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Barnices</h5>
+                        <p class="card-text">Barnices de alta calidad para proteger tus superficies.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Cerámicos</h5>
+                        <p class="card-text">Cerámicos para pisos y paredes.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12 mb-4">
+                <h2>Equipos de Seguridad</h2>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Cascos</h5>
+                        <p class="card-text">Cascos de seguridad para protección en el trabajo.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Guantes</h5>
+                        <p class="card-text">Guantes de protección de diversos tipos.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Lentes de Seguridad</h5>
+                        <p class="card-text">Lentes de seguridad para proteger tus ojos.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12 mb-4">
+                <h2>Otros Productos</h2>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Tornillos y Anclajes</h5>
+                        <p class="card-text">Variedad de tornillos y anclajes para todos tus proyectos.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Fijaciones y Adhesivos</h5>
+                        <p class="card-text">Adhesivos y fijaciones de alta calidad.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Equipos de Medición</h5>
+                        <p class="card-text">Equipos de medición precisos para tus proyectos.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+

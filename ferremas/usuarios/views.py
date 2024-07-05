@@ -9,16 +9,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            if user.role == 'Cliente':
-                return redirect('cliente_dashboard')
-            elif user.role == 'Administrador':
-                return redirect('admin_dashboard')
-            elif user.role == 'Vendedor':
-                return redirect('vendedor_dashboard')
-            elif user.role == 'Bodeguero':
-                return redirect('bodeguero_dashboard')
-            elif user.role == 'Contador':
-                return redirect('contador_dashboard')
+            return redirect('index')
         else:
             return render(request, 'login.html', {'error': 'Credenciales inválidas'})
     return render(request, 'login.html')
@@ -43,9 +34,9 @@ def register_view(request):
 def index_view(request):
     return render(request, 'index.html')
 
-def cliente_dashboard(request):
+def tienda_view(request):
     products = Product.objects.all()
-    return render(request, 'cliente_dashboard.html', {'products': products})
+    return render(request, 'tienda.html', {'products': products})
 
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -53,7 +44,7 @@ def add_to_cart(request, product_id):
     if not created:
         order.quantity += 1
     order.save()
-    return redirect('cliente_dashboard')
+    return redirect('tienda')
 
 def view_cart(request):
     orders = Order.objects.filter(client_name=request.user.username, status='Pending')
@@ -67,5 +58,5 @@ def checkout(request):
             order.status = 'Approved'
             order.save()
             Payment.objects.create(order=order, amount=order.product.price * order.quantity, status='Pending')
-        return redirect('cliente_dashboard')
+        return redirect('tienda')
     return render(request, 'checkout.html')
