@@ -37,11 +37,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'api',
     'usuarios',
     'admin_dashboard',
 ]
 AUTH_USER_MODEL = 'usuarios.CustomUser'
+
+# Configuración de Webpay
+WEBPAY_API_KEY = '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C'
+WEBPAY_ENVIRONMENT = 'TEST'  # Cambia a 'PROD' en producción
+WEBPAY_COMMERCE_CODE = '597020000540'  # Código de comercio de prueba
+WEBPAY_RETURN_URL = 'http://localhost:8000/webpay/return/'
+WEBPAY_FINAL_URL = 'http://localhost:8000/webpay/final/'
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
