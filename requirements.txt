@@ -1,0 +1,7 @@
+Django
+transbank-sdk
+requests
+fastapi
+uvicorn
+jinja2
+datetime
