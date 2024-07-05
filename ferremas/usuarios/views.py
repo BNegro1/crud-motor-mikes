@@ -39,7 +39,7 @@ def tienda_view(request):
     return render(request, 'tienda.html', {'products': products})
 
 def add_to_cart(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
+    product = get_object_or_404(Product, product_id=product_id)
     order, created = Order.objects.get_or_create(product=product, client_name=request.user.username, status='Pending')
     if not created:
         order.quantity += 1

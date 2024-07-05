@@ -11,16 +11,16 @@ class PerformanceReport(models.Model):
     report_date = models.DateField()
 
 class Product(models.Model):
-    code = models.CharField(max_length=20, unique=True)
+    product_id = models.CharField(max_length=20)
     brand = models.CharField(max_length=50, default='Desconocida')
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.IntegerField()
+    category = models.CharField(max_length=50, default='Categoría desconocida')  
 
     def __str__(self):
         return self.name
-
-
+    
 class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
