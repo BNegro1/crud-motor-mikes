@@ -12,23 +12,19 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Código del Producto</th>
-                    <th>Nombre</th>
-                    <th>Marca</th>
+                    <th>Producto</th>
                     <th>Cantidad</th>
-                    <th>Precio Unitario</th>
+                    <th>Precio</th>
                     <th>Total</th>
                 </tr>
             </thead>
             <tbody>
                 {% for order in orders %}
                 <tr>
-                    <td>{{ order.product.product_code }}</td>
                     <td>{{ order.product.name }}</td>
-                    <td>{{ order.product.brand }}</td>
                     <td>{{ order.quantity }}</td>
-                    <td>${{ order.product.prices.last.value }}</td>
-                    <td>${{ order.product.prices.last.value|multiply:order.quantity }}</td>
+                    <td>${{ order.product.price }}</td>
+                    <td>${{ order.product.price|multiply:order.quantity }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

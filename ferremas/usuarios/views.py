@@ -1,9 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from .models import CustomUser, Client, Product, Order, Payment, Delivery
-from django.shortcuts import render
-from django.core.mail import send_mail
-from django.http import HttpResponse
+
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -71,15 +69,3 @@ def checkout(request):
             Payment.objects.create(order=order, amount=order.product.price * order.quantity, status='Pending')
         return redirect('cliente_dashboard')
     return render(request, 'checkout.html')
-
-# usuarios/views.py
-
-
-def contact(request):
-    if request.method == "POST":
-        name = request.POST['name']
-        email = request.POST['email']
-        message = request.POST['message']
-        send_mail(f'Mensaje de {name}', message, email, ['ventas@ferremas.com'])
-        return HttpResponse('Mensaje enviado con éxito')
-    return render(request, 'contact.html')
