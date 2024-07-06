@@ -18,12 +18,12 @@ def view_cart(request):
     orders = Order.objects.filter(status='Pending')  
     return render(request, 'view_cart.html', {'orders': orders})
 
-
 def checkout(request):
     if request.method == 'POST':
 
         orders = Order.objects.filter(status='Pending')
         total_amount = sum(order.product.price * order.quantity for order in orders)
+
 
         buy_order = str(random.randint(100000, 999999))
         session_id = request.session.session_key
@@ -32,10 +32,15 @@ def checkout(request):
         tx = Transaction(WebpayOptions(
             commerce_code=settings.WEBPAY_COMMERCE_CODE,
             api_key=settings.WEBPAY_API_KEY,
-            integration_type=IntegrationType.TEST 
+            integration_type=IntegrationType.TEST  
         ))
-        response = tx.create(buy_order, session_id, total_amount, return_url)
-        
+        try:
+            response = tx.create(buy_order, session_id, total_amount, return_url)
+        except Exception as e:
+
+            print(f"Error de transacción: {e}")
+            return render(request, 'webpay/error.html', {'error': str(e)})
+
         for order in orders:
             Payment.objects.create(
                 order=order,
@@ -48,10 +53,6 @@ def checkout(request):
     else:
         return render(request, 'checkout.html')
 
-def webpay_init(request):
-    # This function may not be necessary anymore if checkout handles payment initiation
-    pass
-
 def webpay_return(request):
     token = request.GET.get('token_ws')
     tx = Transaction(WebpayOptions(
@@ -59,9 +60,15 @@ def webpay_return(request):
         api_key=settings.WEBPAY_API_KEY,
         integration_type=IntegrationType.TEST  
     ))
-    response = tx.commit(token)
-    if response['status'] == 'AUTHORIZED':
+    try:
+        response = tx.commit(token)
+    except Exception as e:
 
+        print(f"Error committing transaction: {e}")
+        return render(request, 'webpay/error.html', {'error': str(e)})
+
+    if response['status'] == 'AUTHORIZED':
+        # Update order status to 'Approved'
         orders = Order.objects.filter(status='Pending')
         for order in orders:
             order.status = 'Approved'
@@ -77,7 +84,13 @@ def webpay_final(request):
         api_key=settings.WEBPAY_API_KEY,
         integration_type=IntegrationType.TEST  
     ))
-    response = tx.status(token)
+    try:
+        response = tx.status(token)
+    except Exception as e:
+
+        print(f"Error de trasacción en estado: {e}")
+        return render(request, 'webpay/error.html', {'error': str(e)})
+
     if response['status'] == 'AUTHORIZED':
         return render(request, 'webpay/success.html', {'response': response})
     else:
