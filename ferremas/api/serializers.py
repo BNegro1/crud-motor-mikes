@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from admin_dashboard.models import Product
+from usuarios.models import Product
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['code', 'brand', 'name', 'price', 'stock', 'category']
+        fields = ['product_id', 'brand', 'name', 'price', 'stock', 'category']
