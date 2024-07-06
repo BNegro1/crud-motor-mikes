@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'api',
     'usuarios',
     'admin_dashboard',
+    'usuarios.templatetags'
 ]
 AUTH_USER_MODEL = 'usuarios.CustomUser'
 

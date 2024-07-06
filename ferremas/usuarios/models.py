@@ -32,14 +32,13 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-    
 class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(default=1)  # Asegúrate de que quantity tiene un valor predeterminado
     status = models.CharField(max_length=20, choices=[('Pending', 'Pending'), ('Approved', 'Approved'), ('Rejected', 'Rejected'), ('Accepted', 'Accepted')], default='Pending')
     client_name = models.CharField(max_length=100)
-    client_address = models.CharField(max_length=200)
-    client_email = models.EmailField()
+    client_address = models.CharField(max_length=200, blank=True, null=True)
+    client_email = models.EmailField(blank=True, null=True)
 
     def __str__(self):
         return f"Order {self.id} - {self.client_name}"

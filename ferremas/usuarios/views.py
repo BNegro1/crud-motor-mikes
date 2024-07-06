@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from .models import CustomUser, Client, Product, Order, Payment, Delivery
-
+from django.contrib.auth.decorators import login_required
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -32,24 +32,39 @@ def register_view(request):
     return render(request, 'register.html')
 
 def index_view(request):
-    return render(request, 'index.html')
+    return render(request, 'inicioGeneral.html')
+
 
 def tienda_view(request):
-    products = Product.objects.all()
-    return render(request, 'tienda.html', {'products': products})
+    tools = Product.objects.filter(category='Herramientas')
+    materials = Product.objects.filter(category='Materiales de Construcción')
+    finishes = Product.objects.filter(category='Acabados')
+    safety = Product.objects.filter(category='Equipos de Seguridad')
+    others = Product.objects.filter(category='Otros')
+    
+    return render(request, 'tienda.html', {
+        'tools': tools,
+        'materials': materials,
+        'finishes': finishes,
+        'safety': safety,
+        'others': others,
+    })
 
+@login_required
 def add_to_cart(request, product_id):
-    product = get_object_or_404(Product, product_id=product_id)
-    order, created = Order.objects.get_or_create(product=product, client_name=request.user.username, status='Pending')
+    product = get_object_or_404(Product, id=product_id)
+    order, created = Order.objects.get_or_create(product=product, client_name=request.user.username, status='Pending', defaults={'quantity': 1})
     if not created:
         order.quantity += 1
-    order.save()
-    return redirect('tienda')
+        order.save()
+    return redirect('view_cart')
 
+@login_required
 def view_cart(request):
     orders = Order.objects.filter(client_name=request.user.username, status='Pending')
     return render(request, 'view_cart.html', {'orders': orders})
 
+@login_required
 def checkout(request):
     if request.method == 'POST':
         orders = Order.objects.filter(client_name=request.user.username, status='Pending')
