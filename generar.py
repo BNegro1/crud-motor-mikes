@@ -45,3 +45,69 @@ df_defectos.to_excel(output_path, index=False)
 
 print(f"Archivo generado: {output_path}")
 '''
+import pandas as pd
+from openpyxl import Workbook
+from openpyxl.utils.dataframe import dataframe_to_rows
+
+# Crear un nuevo libro de trabajo y hojas
+wb = Workbook()
+ws_summary = wb.active
+ws_summary.title = "Resumen"
+
+# Información del caso de prueba
+cases = [
+    {"Número del Caso de Prueba": "CA001", "Componente": "CustomUser - Client", "Descripción de lo que se Probará": "Validar la creación de usuarios con diferentes roles y la asociación con clientes", "Prerrequisitos": "Sistema iniciado, sin usuarios existentes"}
+]
+
+# Crear DataFrame para el resumen del caso de prueba
+df_summary = pd.DataFrame(cases)
+
+# Añadir el resumen a la hoja de resumen
+for r in dataframe_to_rows(df_summary, index=False, header=True):
+    ws_summary.append(r)
+
+# Información de los pasos del caso de prueba
+steps = {
+    "CA001": [
+        {"Paso": 1, "Descripción de pasos a seguir": "Crear un usuario con rol de Cliente", "Datos Entrada": "username, password, role=Cliente", "Salida Esperada": "Usuario creado correctamente", "¿OK?": "", "Observaciones": ""},
+        {"Paso": 2, "Descripción de pasos a seguir": "Crear un usuario con rol de Administrador", "Datos Entrada": "username, password, role=Administrador", "Salida Esperada": "Usuario creado correctamente", "¿OK?": "", "Observaciones": ""},
+        {"Paso": 3, "Descripción de pasos a seguir": "Asociar un cliente a un usuario", "Datos Entrada": "client user", "Salida Esperada": "Cliente asociado correctamente", "¿OK?": "", "Observaciones": ""}
+    ]
+}
+
+# Añadir los pasos del caso de prueba a hojas individuales
+for case_id, step_list in steps.items():
+    ws_steps = wb.create_sheet(title=case_id)
+    df_steps = pd.DataFrame(step_list)
+    for r in dataframe_to_rows(df_steps, index=False, header=True):
+        ws_steps.append(r)
+
+# Guardar el archivo
+wb.save("Pruebas de integracion.xlsx")
+
+
+''''
+cases = [
+    {"Número del Caso de Prueba": "CA001", "Componente": "CustomUser - Client", "Descripción de lo que se Probará": "Validar la creación de usuarios con diferentes roles y la asociación con clientes", "Prerrequisitos": "Sistema iniciado, sin usuarios existentes"},
+    {"Número del Caso de Prueba": "CA002", "Componente": "Product", "Descripción de lo que se Probará": "Verificar la correcta creación y almacenamiento de productos", "Prerrequisitos": "Sistema iniciado, sin productos existentes"},
+    {"Número del Caso de Prueba": "CA003", "Componente": "Order", "Descripción de lo que se Probará": "Comprobar el flujo de creación de pedidos y su estado", "Prerrequisitos": "Sistema iniciado, con productos y clientes existentes"},
+    {"Número del Caso de Prueba": "CA004", "Componente": "Payment", "Descripción de lo que se Probará": "Validar el proceso de pago y actualización del estado de los pedidos", "Prerrequisitos": "Sistema iniciado, con pedidos pendientes"},
+    {"Número del Caso de Prueba": "CA005", "Componente": "Delivery", "Descripción de lo que se Probará": "Verificar la gestión de entregas y actualización del estado de las mismas", "Prerrequisitos": "Sistema iniciado, con pedidos pagados y pendientes de entrega"},
+    {"Número del Caso de Prueba": "CA006", "Componente": "SalesReport", "Descripción de lo que se Probará": "Validar la generación y almacenamiento de informes de ventas", "Prerrequisitos": "Sistema iniciado, con ventas registradas"}
+]
+
+steps = {
+    "CA001": [
+        {"Paso": 1, "Descripción de pasos a seguir": "Crear un usuario con rol de Cliente", "Datos Entrada": "username, password, role=Cliente", "Salida Esperada": "Usuario creado correctamente", "¿OK?": "", "Observaciones": ""},
+        {"Paso": 2, "Descripción de pasos a seguir": "Crear un usuario con rol de Administrador", "Datos Entrada": "username, password, role=Administrador", "Salida Esperada": "Usuario creado correctamente", "¿OK?": "", "Observaciones": ""},
+        {"Paso": 3, "Descripción de pasos a seguir": "Asociar un cliente a un usuario", "Datos Entrada": "client user", "Salida Esperada": "Cliente asociado correctamente", "¿OK?": "", "Observaciones": ""}
+    ],
+    "CA002": [
+        {"Paso": 1, "Descripción de pasos a seguir": "Crear un producto con detalles completos", "Datos Entrada": "product_id, brand, name, price, stock, category", "Salida Esperada": "Producto creado y almacenado correctamente", "¿OK?": "", "Observaciones": ""},
+        {"Paso": 2, "Descripción de pasos a seguir": "Verificar que el producto se muestra en la lista de productos", "Datos Entrada": "N/A", "Salida Esperada": "Producto visible en la lista", "¿OK?": "", "Observaciones": ""}
+    ],
+    "CA003": [
+        {"Paso": 1, "Descripción de pasos a seguir": "Crear un pedido para un producto", "Datos Entrada": "product_id, quantity, client_name, client_address, client_email", "Salida Esperada": "Pedido creado correctamente", "¿OK?": "", "Observaciones": ""},
+        {"Paso": 2, "Descripción de pasos a seguir": "Actualizar el estado del pedido a 'Approved'", "Datos Entrada": "order_id, status='Approved'", "Salida Esperada": "Estado del pedido actualizado", "¿OK?": "", "Observaciones": ""},
+        {"Paso": 3, "Descripción de pasos a seguir": "Rechazar un pedido",
+''''
