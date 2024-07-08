@@ -1,6 +1,7 @@
 import pandas as pd
 from datetime import datetime
 
+'''
 # Datos de muestra para rellenar la planilla de defectos
 defectos = [
     {"ID Defecto": 1, "Descripción": "El campo 'quantity' en el modelo 'Order' no tiene valor por defecto", "Severidad": "Critico", "Estado": "Corregido", "Tipo": "Datos", "Fecha Reporte": "2024-07-06", "Fecha Resolución": "2024-07-06", "Responsable": "Desarrollador"},
@@ -43,5 +44,4 @@ output_path = 'Registro_de_Defectos_Completado.xlsx'
 df_defectos.to_excel(output_path, index=False)
 
 print(f"Archivo generado: {output_path}")
-
-			
+'''
