@@ -43,3 +43,5 @@ output_path = 'Registro_de_Defectos_Completado.xlsx'
 df_defectos.to_excel(output_path, index=False)
 
 print(f"Archivo generado: {output_path}")
+
+			
