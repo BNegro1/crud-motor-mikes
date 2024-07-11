@@ -1,42 +1,57 @@
 import pandas as pd
 from openpyxl import Workbook
-from openpyxl.utils.dataframe import dataframe_to_rows
+from docx import Document
 
-# Datos de las pruebas
-pruebas = [
-    {"ID": 1, "Nombre de la prueba": "Verificar campo 'quantity' en modelo 'Order'", "Tipo": "Funcionalidad", "Resultado esperado": "Valor por defecto en 'quantity'", "Resultado obtenido": "Valor por defecto no definido", "Modulo a probar": "Modelo 'Order'", "Resultado": "Fallido", "Candidato a automatizar": "Sí", "Observación": "Añadir valor por defecto a 'quantity'", "Responsable ejecución": "Desarrollador", "Complejidad": "Media"},
-    {"ID": 2, "Nombre de la prueba": "Validar manejo de cantidad en 'add_to_cart'", "Tipo": "Funcionalidad", "Resultado esperado": "Cantidad manejada correctamente", "Resultado obtenido": "Cantidad no manejada correctamente", "Modulo a probar": "Vista 'add_to_cart'", "Resultado": "Fallido", "Candidato a automatizar": "Sí", "Observación": "Corregir manejo de cantidad", "Responsable ejecución": "Desarrollador", "Complejidad": "Alta"},
-    {"ID": 3, "Nombre de la prueba": "Registro correcto del filtro 'multiply'", "Tipo": "Interfaz", "Resultado esperado": "Filtro 'multiply' registrado correctamente", "Resultado obtenido": "Filtro 'multiply' no registrado", "Modulo a probar": "Filtro 'multiply'", "Resultado": "Fallido", "Candidato a automatizar": "No", "Observación": "Registrar filtro 'multiply'", "Responsable ejecución": "Desarrollador", "Complejidad": "Baja"},
-    {"ID": 4, "Nombre de la prueba": "Agregar productos al carrito", "Tipo": "Funcionalidad", "Resultado esperado": "Productos añadidos correctamente", "Resultado obtenido": "Error 404", "Modulo a probar": "Vista 'add_to_cart'", "Resultado": "Fallido", "Candidato a automatizar": "Sí", "Observación": "Corregir ruta de 'add_to_cart'", "Responsable ejecución": "Desarrollador", "Complejidad": "Alta"},
-    {"ID": 5, "Nombre de la prueba": "Mostrar productos en la tienda", "Tipo": "Funcionalidad", "Resultado esperado": "Productos visibles en la tienda", "Resultado obtenido": "Productos no visibles", "Modulo a probar": "Vista de tienda", "Resultado": "Fallido", "Candidato a automatizar": "No", "Observación": "Revisar lógica de visualización de productos", "Responsable ejecución": "Desarrollador", "Complejidad": "Media"},
-    {"ID": 6, "Nombre de la prueba": "Verificar rutas en URLs", "Tipo": "Sintaxis", "Resultado esperado": "Rutas sin errores", "Resultado obtenido": "Errores de ruteo", "Modulo a probar": "Configuración de URLs", "Resultado": "Fallido", "Candidato a automatizar": "Sí", "Observación": "Corregir errores de ruteo", "Responsable ejecución": "Desarrollador", "Complejidad": "Baja"},
-    {"ID": 7, "Nombre de la prueba": "Validar autenticación y autorización", "Tipo": "Funcionalidad", "Resultado esperado": "Autenticación y autorización correctas", "Resultado obtenido": "Problemas en autenticación", "Modulo a probar": "Sistema de autenticación", "Resultado": "Fallido", "Candidato a automatizar": "Sí", "Observación": "Revisar lógica de autenticación y autorización", "Responsable ejecución": "Desarrollador", "Complejidad": "Alta"},
-    {"ID": 8, "Nombre de la prueba": "Validar integración de pagos", "Tipo": "Funcionalidad", "Resultado esperado": "Pagos procesados correctamente", "Resultado obtenido": "Pagos no procesados", "Modulo a probar": "Sistema de pagos", "Resultado": "Fallido", "Candidato a automatizar": "Sí", "Observación": "Revisar integración con sistema de pagos", "Responsable ejecución": "Desarrollador", "Complejidad": "Alta"},
-    {"ID": 9, "Nombre de la prueba": "Verificar reporte de ventas", "Tipo": "Funcionalidad", "Resultado esperado": "Reporte de ventas generado correctamente", "Resultado obtenido": "Reporte de ventas no generado", "Modulo a probar": "Módulo de reportes", "Resultado": "Fallido", "Candidato a automatizar": "Sí", "Observación": "Revisar lógica de generación de reportes", "Responsable ejecución": "Desarrollador", "Complejidad": "Media"},
-    {"ID": 10, "Nombre de la prueba": "Verificar sistema de notificaciones", "Tipo": "Funcionalidad", "Resultado esperado": "Notificaciones enviadas correctamente", "Resultado obtenido": "Notificaciones no enviadas", "Modulo a probar": "Sistema de notificaciones", "Resultado": "Fallido", "Candidato a automatizar": "No", "Observación": "Revisar integración con sistema de notificaciones", "Responsable ejecución": "Desarrollador", "Complejidad": "Media"},
-    {"ID": 11, "Nombre de la prueba": "Validar actualización de stock", "Tipo": "Funcionalidad", "Resultado esperado": "Stock actualizado correctamente", "Resultado obtenido": "Stock no actualizado", "Modulo a probar": "Sistema de inventario", "Resultado": "Fallido", "Candidato a automatizar": "Sí", "Observación": "Revisar lógica de actualización de stock", "Responsable ejecución": "Desarrollador", "Complejidad": "Alta"},
-    {"ID": 12, "Nombre de la prueba": "Verificar envío de correos", "Tipo": "Funcionalidad", "Resultado esperado": "Correos enviados correctamente", "Resultado obtenido": "Correos no enviados", "Modulo a probar": "Sistema de correos", "Resultado": "Fallido", "Candidato a automatizar": "Sí", "Observación": "Revisar integración con sistema de correos", "Responsable ejecución": "Desarrollador", "Complejidad": "Media"},
-    {"ID": 13, "Nombre de la prueba": "Validar registro de usuarios", "Tipo": "Funcionalidad", "Resultado esperado": "Usuarios registrados correctamente", "Resultado obtenido": "Usuarios no registrados", "Modulo a probar": "Sistema de registro", "Resultado": "Fallido", "Candidato a automatizar": "Sí", "Observación": "Revisar lógica de registro de usuarios", "Responsable ejecución": "Desarrollador", "Complejidad": "Alta"},
-    {"ID": 14, "Nombre de la prueba": "Verificar lógica de descuentos", "Tipo": "Funcionalidad", "Resultado esperado": "Descuentos aplicados correctamente", "Resultado obtenido": "Descuentos no aplicados", "Modulo a probar": "Sistema de descuentos", "Resultado": "Fallido", "Candidato a automatizar": "No", "Observación": "Revisar lógica de aplicación de descuentos", "Responsable ejecución": "Desarrollador", "Complejidad": "Media"},
-    {"ID": 15, "Nombre de la prueba": "Validar generación de facturas", "Tipo": "Funcionalidad", "Resultado esperado": "Facturas generadas correctamente", "Resultado obtenido": "Facturas no generadas", "Modulo a probar": "Sistema de facturación", "Resultado": "Fallido", "Candidato a automatizar": "Sí", "Observación": "Revisar lógica de generación de facturas", "Responsable ejecución": "Desarrollador", "Complejidad": "Alta"},
-    {"ID": 16, "Nombre de la prueba": "Verificar lógica de búsqueda", "Tipo": "Funcionalidad", "Resultado esperado": "Búsqueda funcionando correctamente", "Resultado obtenido": "Búsqueda no funciona", "Modulo a probar": "Sistema de búsqueda", "Resultado": "Fallido", "Candidato a automatizar": "No", "Observación": "Revisar lógica de búsqueda", "Responsable ejecución": "Desarrollador", "Complejidad": "Media"},
-    {"ID": 17, "Nombre de la prueba": "Validar exportación de datos", "Tipo": "Funcionalidad", "Resultado esperado": "Datos exportados correctamente", "Resultado obtenido": "Datos no exportados", "Modulo a probar": "Sistema de exportación", "Resultado": "Fallido", "Candidato a automatizar": "Sí", "Observación": "Revisar integración con sistema de exportación", "Responsable ejecución": "Desarrollador", "Complejidad": "Alta"},
-    {"ID": 18, "Nombre de la prueba": "Verificar lógica de filtros", "Tipo": "Funcionalidad", "Resultado esperado": "Filtros funcionando correctamente", "Resultado obtenido": "Filtros no funcionan", "Modulo a probar": "Sistema de filtros", "Resultado": "Fallido", "Candidato a automatizar": "No", "Observación": "Revisar lógica de filtros", "Responsable ejecución": "Desarrollador", "Complejidad": "Media"}
+# Datos de la tabla
+data = [
+    ["No.", "ACTIVIDADES", "Comité Colaborador del Proyecto", "Comisión del Cliente", "Administrador del Modelo", "Ingeniero de Sistemas", "Técnico de Sistemas", "Supervisor", "Electricistas", "Personal del Modelo"],
+    [1, "Contratación del Proyecto", "R", "S", "", "", "", "", "", ""],
+    [2, "Definir alcance del proyecto", "R", "", "S", "", "", "", "", ""],
+    [3, "Creación del cronograma de actividades", "R", "", "S", "", "", "", "", ""],
+    [4, "Asignación de recursos", "R", "", "S", "", "", "", "", ""],
+    [5, "Contratación del Administrador del modelo", "R", "S", "", "", "", "", "", ""],
+    [6, "Difusión de la propuesta en la institución", "R", "", "S", "", "", "", "", ""],
+    [7, "Contratación del personal técnico", "R", "", "S", "", "", "", "", ""],
+    [8, "Preparación del ambiente de pruebas", "", "", "S", "R", "", "", "", ""],
+    [9, "Adquisición de equipo y materiales", "R", "", "S", "", "", "", "", ""],
+    [10, "Capacitación del personal", "R", "", "S", "", "", "", "", ""],
+    [11, "Entrega preliminar del modelo", "", "", "S", "R", "", "", "", ""],
+    [12, "Pruebas preliminares", "", "", "S", "R", "", "", "", ""],
+    [13, "Retroalimentación de las pruebas preliminares", "", "", "S", "R", "", "", "", ""],
+    [14, "Liberación de recursos", "R", "", "S", "", "", "", "", ""],
+    [15, "Inicio de la marcha blanca", "", "", "S", "R", "", "", "", ""],
+    [16, "Evaluación final", "", "", "S", "R", "", "", "", ""]
 ]
 
-# Crear DataFrame para las pruebas
-df_pruebas = pd.DataFrame(pruebas)
+# Crear un DataFrame
+df = pd.DataFrame(data[1:], columns=data[0])
 
-# Crear un nuevo libro de trabajo y hoja
-wb = Workbook()
-ws_pruebas = wb.active
-ws_pruebas.title = "Pruebas"
+# Guardar el DataFrame en un archivo Excel
+excel_file = "table.xlsx"
+df.to_excel(excel_file, index=False)
 
-# Añadir el resumen de pruebas a la hoja de pruebas
-for r in dataframe_to_rows(df_pruebas, index=False, header=True):
-    ws_pruebas.append(r)
+# Crear un nuevo documento de Word
+doc = Document()
 
-# Guardar el archivo Excel
-wb.save("Pruebas_de_Integracion.xlsx")
+# Agregar un título al documento
+doc.add_heading('Tabla de Actividades del Plan de Implantación', level=1)
 
-print("Archivo Excel creado exitosamente.")
+# Agregar una tabla al documento de Word
+table = doc.add_table(rows=1, cols=len(data[0]))
+
+# Agregar los encabezados de la tabla
+hdr_cells = table.rows[0].cells
+for i, column_name in enumerate(data[0]):
+    hdr_cells[i].text = column_name
+
+# Agregar los datos a la tabla
+for row in data[1:]:
+    row_cells = table.add_row().cells
+    for i, cell in enumerate(row):
+        row_cells[i].text = str(cell)
+
+# Guardar el documento de Word
+word_file = "table.docx"
+doc.save(word_file)
+
+print(f"Tabla guardada en {excel_file} y {word_file}")
