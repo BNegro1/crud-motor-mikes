@@ -21,9 +21,13 @@ class Product(models.Model):
     def __str__(self):
         return self.name
     
-class Order(models.Model):
+class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
+    order = models.ForeignKey('Order', related_name='items', on_delete=models.CASCADE)
+
+class Order(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=[('Pending', 'Pending'), ('Approved', 'Approved'), ('Rejected', 'Rejected'), ('Accepted', 'Accepted')], default='Pending')
     client_name = models.CharField(max_length=100)
     client_address = models.CharField(max_length=200)
