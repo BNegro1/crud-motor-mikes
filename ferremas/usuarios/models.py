@@ -32,6 +32,13 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    def reduce_stock(self, quantity):
+        if self.stock >= quantity:
+            self.stock -= quantity
+            self.save()
+            return True
+        return False
+
 class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)  # Asegúrate de que quantity tiene un valor predeterminado

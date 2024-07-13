@@ -13,8 +13,8 @@
             <div class="card-body">
                 <h5 class="card-title">{{ product.name }}</h5>
                 <p class="card-text">Precio: ${{ product.price }}</p>
-                <p class="card-text">Stock: {{ product.stock }}</p>
-                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                <p class="card-text">Stock: <span id="stock-{{ product.id }}">{{ product.stock }}</span></p>
+                <button onclick="addToCart('{{ product.id }}')" class="btn btn-primary">Agregar al Carrito</button>
             </div>
         </div>
     </div>
@@ -32,8 +32,8 @@
                 <h5 class="card-title">{{ product.name }}</h5>
                 <p class="card-text">{{ product.description }}</p>
                 <p class="card-text">Precio: ${{ product.price }}</p>
-                <p class="card-text">Stock: {{ product.stock }}</p>
-                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                <p class="card-text">Stock: <span id="stock-{{ product.id }}">{{ product.stock }}</span></p>
+                <button onclick="addToCart('{{ product.id }}')" class="btn btn-primary">Agregar al Carrito</button>
             </div>
         </div>
     </div>
@@ -51,8 +51,8 @@
                 <h5 class="card-title">{{ product.name }}</h5>
                 <p class="card-text">{{ product.description }}</p>
                 <p class="card-text">Precio: ${{ product.price }}</p>
-                <p class="card-text">Stock: {{ product.stock }}</p>
-                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                <p class="card-text">Stock: <span id="stock-{{ product.id }}">{{ product.stock }}</span></p>
+                <button onclick="addToCart('{{ product.id }}')" class="btn btn-primary">Agregar al Carrito</button>
             </div>
         </div>
     </div>
@@ -70,8 +70,8 @@
                 <h5 class="card-title">{{ product.name }}</h5>
                 <p class="card-text">{{ product.description }}</p>
                 <p class="card-text">Precio: ${{ product.price }}</p>
-                <p class="card-text">Stock: {{ product.stock }}</p>
-                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                <p class="card-text">Stock: <span id="stock-{{ product.id }}">{{ product.stock }}</span></p>
+                <button onclick="addToCart('{{ product.id }}')" class="btn btn-primary">Agregar al Carrito</button>
             </div>
         </div>
     </div>
@@ -89,11 +89,55 @@
                 <h5 class="card-title">{{ product.name }}</h5>
                 <p class="card-text">{{ product.description }}</p>
                 <p class="card-text">Precio: ${{ product.price }}</p>
-                <p class="card-text">Stock: {{ product.stock }}</p>
-                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                <p class="card-text">Stock: <span id="stock-{{ product.id }}">{{ product.stock }}</span></p>
+                <button onclick="addToCart('{{ product.id }}')" class="btn btn-primary">Agregar al Carrito</button>
             </div>
         </div>
     </div>
     {% endfor %}
 </div>
+
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function addToCart(productId) {
+    const csrfToken = getCookie('csrftoken');
+
+    fetch(`/usuarios/add_to_cart/${productId}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const stockElement = document.getElementById(`stock-${productId}`);
+            stockElement.textContent = data.stock;
+            alert(`Producto agregado. Cantidad en el carrito: ${data.quantity}`);
+        } else {
+            alert(data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Ocurrió un error al agregar el producto al carrito.');
+    });
+}
+</script>
 {% endblock %}

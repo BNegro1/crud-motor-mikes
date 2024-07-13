@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
-from .models import CustomUser, Client, Product, Order, Payment, Delivery
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from .models import CustomUser, Client, Product, Order, Payment, Delivery
+
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -52,12 +54,19 @@ def tienda_view(request):
 
 @login_required
 def add_to_cart(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    order, created = Order.objects.get_or_create(product=product, client_name=request.user.username, status='Pending', defaults={'quantity': 1})
-    if not created:
-        order.quantity += 1
-        order.save()
-    return redirect('view_cart')
+    if request.method == 'POST':
+        product = get_object_or_404(Product, id=product_id)
+        if product.stock > 0:
+            order, created = Order.objects.get_or_create(product=product, client_name=request.user.username, status='Pending', defaults={'quantity': 1})
+            if not created:
+                order.quantity += 1
+                order.save()
+            product.stock -= 1
+            product.save()
+            return JsonResponse({'success': True, 'stock': product.stock, 'quantity': order.quantity})
+        else:
+            return JsonResponse({'success': False, 'error': 'Producto agotado'})
+    return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
 
 @login_required
 def view_cart(request):
