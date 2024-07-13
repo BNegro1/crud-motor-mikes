@@ -84,3 +84,5 @@ def checkout(request):
             Payment.objects.create(order=order, amount=order.product.price * order.quantity, status='Pending')
         return redirect('tienda')
     return render(request, 'checkout.html')
+
+

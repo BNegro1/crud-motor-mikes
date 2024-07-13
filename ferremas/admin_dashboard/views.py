@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from .models import SalesReport, PerformanceReport, Product, Order, Payment, Delivery
 from django.contrib.auth.decorators import login_required
+from usuarios.models import Product, Order, Payment, Delivery, SalesReport, PerformanceReport
+
 def general_dashboard(request):
     return render(request, 'admin_dashboard/dashboard.html')
 
@@ -29,16 +30,13 @@ def contador_dashboard(request):
         'deliveries': deliveries
     })
 
-
 @login_required
 def vendedor_dashboard(request):
     products = Product.objects.all()
     orders = Order.objects.filter(status='Pending')
-    return render(request, 'admin_dashboard/vendedor_dashboard.html', {
-        'products': products,
-        'orders': orders
-    })
-
+    print("Products: ", products)  # Debug print
+    print("Orders: ", orders)  # Debug print
+    return render(request, 'admin_dashboard/vendedor_dashboard.html', {'products': products, 'orders': orders})
 
 @login_required
 def accept_order(request, order_id):
