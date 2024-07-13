@@ -2,6 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import SalesReport, PerformanceReport, Product, Order, Payment, Delivery
 
+def general_dashboard(request):
+    return render(request, 'admin_dashboard/dashboard.html')
+
 def admin_dashboard(request):
     sales_reports = SalesReport.objects.all()
     performance_reports = PerformanceReport.objects.all()

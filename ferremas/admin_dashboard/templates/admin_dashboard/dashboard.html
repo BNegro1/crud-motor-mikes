@@ -1,0 +1,48 @@
+{% extends "inicioGeneralBase.html" %}
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Dashboard General</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-header">Admin</div>
+                <div class="card-body">
+                    <h5 class="card-title">Admin Dashboard</h5>
+                    <p class="card-text">Manage sales and performance reports.</p>
+                    <a href="{% url 'admin_dashboard' %}" class="btn btn-light">Go to Admin</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-secondary mb-3">
+                <div class="card-header">Bodeguero</div>
+                <div class="card-body">
+                    <h5 class="card-title">Bodeguero Dashboard</h5>
+                    <p class="card-text">Manage approved orders.</p>
+                    <a href="{% url 'bodeguero_dashboard' %}" class="btn btn-light">Go to Bodeguero</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">Contador</div>
+                <div class="card-body">
+                    <h5 class="card-title">Contador Dashboard</h5>
+                    <p class="card-text">Manage pending payments and deliveries.</p>
+                    <a href="{% url 'contador_dashboard' %}" class="btn btn-light">Go to Contador</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-header">Vendedor</div>
+                <div class="card-body">
+                    <h5 class="card-title">Vendedor Dashboard</h5>
+                    <p class="card-text">Manage products and pending orders.</p>
+                    <a href="{% url 'vendedor_dashboard' %}" class="btn btn-light">Go to Vendedor</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
